@@ -1,0 +1,38 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww14200\viewh7780\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 LOAD X\
+LoopSquare, LOAD X2\
+ADD X\
+STORE X2\
+LOAD Ctr\
+ADD One\
+STORE Ctr\
+SUBT X\
+SKIPCOND 000 /<0\
+JUMP LoopCubeStart\
+JUMP LoopSquare\
+LoopCubeStart, Clear\
+STORE Ctr /Reset Ctr to 0\
+LoopCube, LOAD X3\
+ADD X2\
+STORE X3\
+LOAD Ctr\
+ADD One\
+STORE Ctr\
+SUBT X\
+SKIPCOND 000 /<0\
+JUMP EndCube\
+JUMP LoopCube\
+EndCube, Load X3\
+Output\
+HALT\
+X, DEC 5\
+X2, DEC 0\
+X3, DEC 0\
+Ctr, DEC 0\
+One, DEC 1\
+}

@@ -1,0 +1,17 @@
+       .st
+      LOOPEQ INI JEQTST
+       PSH JEQTST
+       JEQ LOOPEQ
+       POP JEQTST
+      LOOPGT INI JGTTST
+       PSH JGTTST
+       JGT LOOPGT
+       POP JEQTST
+      LOOPLT INI JLTTST
+       PSH JLTTST
+       JLT LOOPLT
+       HLT
+       JEQTST .dw 0
+       JGTTST .dw 0
+       JLTTST .dw 0
+       .nd

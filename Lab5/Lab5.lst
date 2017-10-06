@@ -1,0 +1,79 @@
+     Assembly listing for: Lab5.mas
+                Assembled: Mon Mar 17 07:29:34 CDT 2014
+
+000 5000 |                INPUT                   /Get first number
+001 202F |                STORE X                 /Store in X to be used by the cubing subroutine
+002 0010 |                JNS SubrCube            /Call the subroutine to cube the value in X
+003 1031 |                LOAD X3                 /Load the value of X cubed by the subroutine
+004 200E |                STORE CubeNum1          /Store this as the cube of the first number input
+005 5000 |                INPUT                   /Get the second number
+006 202F |                STORE X                 /Store this number to be used by the cubing subroutine
+007 0010 |                JNS SubrCube            /Call the subroutine to cube the number
+008 1031 |                LOAD X3                 /Load the value of X cubed by the subroutine
+009 200F |                STORE CubeNum2          /Store this value as the cube of the second number
+00A 100E |                LOAD CubeNum1           /Load the first number cubed
+00B 400F |                SUBT CubeNum2           /Subtract the second cubed number from it
+00C 6000 |                OUTPUT                  /Display the difference
+00D 7000 |                HALT                    /Stop the program
+00E 0000 |  CubeNum1      DEC 0                   /Used to hold the first number cubed
+00F 0000 |  CubeNum2      DEC 0                   /Used to hold the second number cubed
+010 0000 |  SubrCube      DEC 0                   /The subroutine for cubing the number stored in X
+011 1034 |                LOAD Zero               /Used to refresh values
+012 2030 |                STORE X2                /Refresh X2 (Number squared)
+013 2031 |                STORE X3                /Refresh X3 (Number cubed)
+014 2032 |                STORE Ctr               /Refresh the value used to control the loop)
+015 102F |                LOAD X                  /Load the number to be squared
+016 1030 |  LoopSquare    LOAD X2                 /To square the number, add X to itself X times.
+017 302F |                ADD X                    
+018 2030 |                STORE X2                 
+019 1032 |                LOAD Ctr                /Increment the loop control variable
+01A 3033 |                ADD One                  
+01B 2032 |                STORE Ctr                
+01C 402F |                SUBT X                  /Subtract X from the control variable. If it is not negative, stop the loop (loop X times)
+01D 8000 |                SKIPCOND 000            /<0
+01E 9020 |                JUMP LoopCubeStart      /If the loop has executed X times, jump to the cubing loop
+01F 9016 |                JUMP LoopSquare         /Otherwise, loop again
+020 A000 |  LoopCubeStart CLEAR                   /Clear the AC for the cube loop.
+021 2032 |                STORE Ctr               /Reset Ctr to 0 
+022 1031 |  LoopCube      LOAD X3                 /Add X2 (X squared) to itself X times to get X cubed.
+023 3030 |                ADD X2                   
+024 2031 |                STORE X3                 
+025 1032 |                LOAD Ctr                 
+026 3033 |                ADD One                  
+027 2032 |                STORE Ctr                
+028 402F |                SUBT X                  /Subtract X from the control variable. If it is not negative, stop the loop (loop X times)
+029 8000 |                SKIPCOND 000            /<0
+02A 902C |                JUMP EndCube            /If the loop has executed X times, stop the loop
+02B 9022 |                JUMP LoopCube           /Otherwise loop again.
+02C 1031 |  EndCube       LOAD X3                 /Loop has ended, show the cubed value
+02D 6000 |                OUTPUT                   
+02E C010 |                JUMPI SubrCube          /Jump to the calling code
+02F 0000 |  X             DEC 0                   /Number to be cubed
+030 0000 |  X2            DEC 0                   /Number squared
+031 0000 |  X3            DEC 0                   /Number cubed
+032 0000 |  Ctr           DEC 0                   /Loop control variable
+033 0001 |  One           DEC 1                   /Used to increment by 1
+034 0000 |  Zero          DEC 0                   /Used to reset values
+
+Assembly successful.
+
+         SYMBOL TABLE
+         ---------------------------------------------------------
+          Symbol        | Defined | References 
+         ---------------+---------+-------------------------------
+          Ctr           |   032   | 014, 019, 01B, 021, 025, 027
+          CubeNum1      |   00E   | 004, 00A
+          CubeNum2      |   00F   | 009, 00B
+          EndCube       |   02C   | 02A
+          LoopCube      |   022   | 02B
+          LoopCubeStart |   020   | 01E
+          LoopSquare    |   016   | 01F
+          One           |   033   | 01A, 026
+          SubrCube      |   010   | 002, 007, 02E
+          X             |   02F   | 001, 006, 015, 017, 01C, 028
+          X2            |   030   | 012, 016, 018, 023
+          X3            |   031   | 003, 008, 013, 022, 024, 02C
+          Zero          |   034   | 011
+         ---------------------------------------------------------
+
+

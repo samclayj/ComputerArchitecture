@@ -1,0 +1,356 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww14200\viewh16520\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 Subroutine to cube a number.\
+\
+Start out with number in AC.\
+Store the number (number to be cubed).\
+\
+Cubing a number X can be achieved by adding X to itself X times to get X2, than adding X2 to itself X times, giving X3.\
+\
+X = 5\
+\
+5^3 = 125 = X3\
+\
+5+5+5+5+5= 25 = X2\
+\
+25+25+25+25+25 = 125 = X3\
+\
+Use a control variable beginning at 0. When the control variable - X >= 0, the loop is finished.\
+Repeat the above step with X2 being added to itself 5 times.\
+\
+LOAD X\
+LoopSquare, LOAD X2\
+ADD X\
+STORE X2\
+LOAD Ctr\
+ADD One\
+STORE Ctr\
+SUBT X\
+SKIPCOND 000 /<0\
+JUMP LoopCubeStart\
+JUMP LoopSquare\
+LoopCubeStart, Clear\
+STORE Ctr /Reset Ctr to 0\
+LoopCube, LOAD X3\
+ADD X2\
+STORE X3\
+LOAD Ctr\
+ADD One\
+STORE Ctr\
+SUBT X\
+SKIPCOND 000 /<0\
+JUMP EndCube\
+JUMP LoopCube\
+EndCube, Load X3\
+Output\
+HALT\
+X, DEC 5\
+X2, DEC 0\
+X3, DEC 0\
+Ctr, DEC 0\
+One, DEC 1\
+\
+The above works to cube a single number. This can be used as the sub routine.\
+\
+Next, right a program that takes in two numbers as input, and displays the difference between the two numbers.\
+\
+The first number will be stored in Num1, the second in Num2. The difference will be stored in the AC using SUBT (LOAD Num1, SUBT Num2), and then output to the console using OUTPUT.\
+\
+Input is gotten using INPUT, which loads the contents of the INPUT register into the AC. This input can be used to store a value in Num1, and then a value in Num2. The difference can then be found between the two numbers.\
+\
+INPUT\
+STORE Num1\
+INPUT\
+STORE Num2\
+LOAD Num1\
+SUBT Num2\
+OUTPUT\
+HALT\
+Num1, DEC 0\
+Num2, DEC 0\
+\
+The above works to subtract Num2 from Num1 where both Num1 and Num2 are input by the user.\
+\
+Now these two portions need to be combined. The cube of Num1 will be found using the subroutine for cubing and stored in CubeNum1. The cube of Num2 will be found using the subroutine for cubing and stored in CubeNum2. CubeNum1 will then be loaded into the AC using LOAD and then CubeNum2 will be subtracted from the value in the AC (SUBT CubeNum2). This difference is then output using the OUTPUT command.\
+\
+TRY 1:\
+\
+INPUT\
+STORE Num1\
+JnS Subr\
+LOAD X3\
+STORE CubeNum1\
+INPUT\
+STORE Num2\
+JnS Subr\
+LOAD X3\
+STORE CubeNum2\
+LOAD CubeNum1\
+SUBT CubeNum2\
+OUTPUT\
+HALT\
+Num1, DEC 0\
+Num2, DEC 0\
+CubeNum1, DEC 0\
+CubeNum2, DEC 0\
+Subr, HEX 0 /Subroutine for cubing numbers\
+STORE X /Store value in X\
+LOAD Zero\
+STORE X2\
+STORE X3\
+LoopSquare, LOAD X2\
+ADD X\
+STORE X2\
+LOAD Ctr\
+ADD One\
+STORE Ctr\
+SUBT X\
+SKIPCOND 000 /<0\
+JUMP LoopCubeStart\
+JUMP LoopSquare\
+LoopCubeStart, Clear\
+STORE Ctr /Reset Ctr to 0\
+LoopCube, LOAD X3\
+ADD X2\
+STORE X3\
+LOAD Ctr\
+ADD One\
+STORE Ctr\
+SUBT X\
+SKIPCOND 000 /<0\
+JUMP EndCube\
+JUMP LoopCube\
+EndCube, Load X3\
+JUMP Subr\
+X, DEC 5\
+X2, DEC 0\
+X3, DEC 0\
+Ctr, DEC 0\
+One, DEC 1\
+Zero, DEC 0\
+\
+The above seems to hard to tackle. Try getting a number from input and cubing it using the cube routine already constructed:\
+\
+INPUT\
+STORE Num1\
+STORE X\
+JnS SubrCube\
+LOAD X3\
+OUTPUT\
+HALT\
+Num1, DEC 0\
+SubrCube, DEC 0\
+LOAD X\
+LoopSquare, LOAD X2\
+ADD X\
+STORE X2\
+LOAD Ctr\
+ADD One\
+STORE Ctr\
+SUBT X\
+SKIPCOND 000 /<0\
+JUMP LoopCubeStart\
+JUMP LoopSquare\
+LoopCubeStart, Clear\
+STORE Ctr /Reset Ctr to 0\
+LoopCube, LOAD X3\
+ADD X2\
+STORE X3\
+LOAD Ctr\
+ADD One\
+STORE Ctr\
+SUBT X\
+SKIPCOND 000 /<0\
+JUMP EndCube\
+JUMP LoopCube\
+EndCube, Load X3\
+JUMPI SubrCube\
+X, DEC 0\
+X2, DEC 0\
+X3, DEC 0\
+Ctr, DEC 0\
+One, DEC 1\
+\
+This works for the behavior desired. My error was using JUMP instead of JUMPI to return to the calling code from the subroutine.\
+\
+The following code works to load both numbers and call the cube subroutine with each number. There is currently an error in that the first number is cubed, but the second number is only squared by the subroutine:\
+\
+INPUT\
+STORE Num1\
+STORE X\
+JnS SubrCube\
+LOAD X3\
+STORE CubeNum1\
+INPUT\
+STORE Num2\
+STORE X\
+JnS SubrCube\
+LOAD X3\
+STORE CubeNum2\
+LOAD CubeNum1\
+SUBT CubeNum2\
+OUTPUT\
+HALT\
+Num1, DEC 0\
+Num2, DEC 0\
+CubeNum1, DEC 0\
+CubeNum2, DEC 0\
+SubrCube, DEC 0\
+LOAD Zero\
+STORE X2\
+STORE X3\
+LOAD X\
+LoopSquare, LOAD X2\
+ADD X\
+STORE X2\
+LOAD Ctr\
+ADD One\
+STORE Ctr\
+SUBT X\
+SKIPCOND 000 /<0\
+JUMP LoopCubeStart\
+JUMP LoopSquare\
+LoopCubeStart, Clear\
+STORE Ctr /Reset Ctr to 0\
+LoopCube, LOAD X3\
+ADD X2\
+STORE X3\
+LOAD Ctr\
+ADD One\
+STORE Ctr\
+SUBT X\
+SKIPCOND 000 /<0\
+JUMP EndCube\
+JUMP LoopCube\
+EndCube, Load X3\
+OUTPUT\
+JUMPI SubrCube\
+X, DEC 0\
+X2, DEC 0\
+X3, DEC 0\
+Ctr, DEC 0\
+One, DEC 1\
+Zero, DEC 0\
+\
+The following code takes a number as input, then cubes and stores the number. It then takes a second number as input, and then cubes and stores the number. It then loads the first number (cubed) and subtracts the second cubed number from it. The difference is then displayed to the console.\
+\
+INPUT\
+STORE Num1\
+STORE X\
+JnS SubrCube\
+LOAD X3\
+STORE CubeNum1\
+INPUT\
+STORE Num2\
+STORE X\
+JnS SubrCube\
+LOAD X3\
+STORE CubeNum2\
+LOAD CubeNum1\
+SUBT CubeNum2\
+OUTPUT\
+HALT\
+Num1, DEC 0\
+Num2, DEC 0\
+CubeNum1, DEC 0\
+CubeNum2, DEC 0\
+SubrCube, DEC 0\
+LOAD Zero\
+STORE X2\
+STORE X3\
+STORE Ctr\
+LOAD X\
+LoopSquare, LOAD X2\
+ADD X\
+STORE X2\
+LOAD Ctr\
+ADD One\
+STORE Ctr\
+SUBT X\
+SKIPCOND 000 /<0\
+JUMP LoopCubeStart\
+JUMP LoopSquare\
+LoopCubeStart, Clear\
+STORE Ctr /Reset Ctr to 0\
+LoopCube, LOAD X3\
+ADD X2\
+STORE X3\
+LOAD Ctr\
+ADD One\
+STORE Ctr\
+SUBT X\
+SKIPCOND 000 /<0\
+JUMP EndCube\
+JUMP LoopCube\
+EndCube, Load X3\
+OUTPUT\
+JUMPI SubrCube\
+X, DEC 0\
+X2, DEC 0\
+X3, DEC 0\
+Ctr, DEC 0\
+One, DEC 1\
+Zero, DEC 0\
+\
+Now, optimizing the code to remove unnecessary labels:\
+\
+INPUT /Get first number\
+STORE X /Store in X to be used by the cubing subroutine\
+JnS SubrCube /Call the subroutine to cube the value in X\
+LOAD X3 /Load the value of X cubed by the subroutine\
+STORE CubeNum1 /Store this as the cube of the first number input\
+INPUT /Get the second number\
+STORE X /Store this number to be used by the cubing subroutine\
+JnS SubrCube /Call the subroutine to cube the number\
+LOAD X3 /Load the value of X cubed by the subroutine\
+STORE CubeNum2 /Store this value as the cube of the second number\
+LOAD CubeNum1 /Load the first number cubed\
+SUBT CubeNum2 /Subtract the second cubed number from it\
+OUTPUT /Display the difference\
+HALT /Stop the program\
+CubeNum1, DEC 0 /Used to hold the first number cubed\
+CubeNum2, DEC 0 /Used to hold the second number cubed\
+SubrCube, DEC 0 /The subroutine for cubing the number stored in X\
+LOAD Zero /Used to refresh values\
+STORE X2 /Refresh X2 (Number squared)\
+STORE X3 /Refresh X3 (Number cubed)\
+STORE Ctr /Refresh the value used to control the loop)\
+LOAD X /Load the number to be squared\
+LoopSquare, LOAD X2 /To square the number, add X to itself X times.\
+ADD X\
+STORE X2\
+LOAD Ctr /Increment the loop control variable\
+ADD One\
+STORE Ctr\
+SUBT X /Subtract X from the control variable. If it is not negative, stop the loop (loop X times)\
+SKIPCOND 000 /<0\
+JUMP LoopCubeStart /If the loop has executed X times, jump to the cubing loop\
+JUMP LoopSquare /Otherwise, loop again\
+LoopCubeStart, Clear /Clear the AC for the cube loop.\
+STORE Ctr /Reset Ctr to 0 \
+LoopCube, LOAD X3 /Add X2 (X squared) to itself X times to get X cubed.\
+ADD X2\
+STORE X3\
+LOAD Ctr\
+ADD One\
+STORE Ctr\
+SUBT X /Subtract X from the control variable. If it is not negative, stop the loop (loop X times)\
+SKIPCOND 000 /<0\
+JUMP EndCube /If the loop has executed X times, stop the loop\
+JUMP LoopCube /Otherwise loop again.\
+EndCube, Load X3 /Loop has ended, show the cubed value\
+OUTPUT\
+JUMPI SubrCube /Jump to the calling code\
+X, DEC 0 /Number to be cubed\
+X2, DEC 0 /Number squared\
+X3, DEC 0 /Number cubed\
+Ctr, DEC 0 /Loop control variable\
+One, DEC 1 /Used to increment by 1\
+Zero, DEC 0 /Used to reset values\
+\
+The above is the working program.\
+}

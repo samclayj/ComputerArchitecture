@@ -1,0 +1,53 @@
+INPUT /Get first number
+STORE X /Store in X to be used by the cubing subroutine
+JnS SubrCube /Call the subroutine to cube the value in X
+LOAD X3 /Load the value of X cubed by the subroutine
+STORE CubeNum1 /Store this as the cube of the first number input
+INPUT /Get the second number
+STORE X /Store this number to be used by the cubing subroutine
+JnS SubrCube /Call the subroutine to cube the number
+LOAD X3 /Load the value of X cubed by the subroutine
+STORE CubeNum2 /Store this value as the cube of the second number
+LOAD CubeNum1 /Load the first number cubed
+SUBT CubeNum2 /Subtract the second cubed number from it
+OUTPUT /Display the difference
+HALT /Stop the program
+CubeNum1, DEC 0 /Used to hold the first number cubed
+CubeNum2, DEC 0 /Used to hold the second number cubed
+SubrCube, DEC 0 /The subroutine for cubing the number stored in X
+LOAD Zero /Used to refresh values
+STORE X2 /Refresh X2 (Number squared)
+STORE X3 /Refresh X3 (Number cubed)
+STORE Ctr /Refresh the value used to control the loop)
+LOAD X /Load the number to be squared
+LoopSquare, LOAD X2 /To square the number, add X to itself X times.
+ADD X
+STORE X2
+LOAD Ctr /Increment the loop control variable
+ADD One
+STORE Ctr
+SUBT X /Subtract X from the control variable. If it is not negative, stop the loop (loop X times)
+SKIPCOND 000 /<0
+JUMP LoopCubeStart /If the loop has executed X times, jump to the cubing loop
+JUMP LoopSquare /Otherwise, loop again
+LoopCubeStart, Clear /Clear the AC for the cube loop.
+STORE Ctr /Reset Ctr to 0 
+LoopCube, LOAD X3 /Add X2 (X squared) to itself X times to get X cubed.
+ADD X2
+STORE X3
+LOAD Ctr
+ADD One
+STORE Ctr
+SUBT X /Subtract X from the control variable. If it is not negative, stop the loop (loop X times)
+SKIPCOND 000 /<0
+JUMP EndCube /If the loop has executed X times, stop the loop
+JUMP LoopCube /Otherwise loop again.
+EndCube, Load X3 /Loop has ended, show the cubed value
+OUTPUT
+JUMPI SubrCube /Jump to the calling code
+X, DEC 0 /Number to be cubed
+X2, DEC 0 /Number squared
+X3, DEC 0 /Number cubed
+Ctr, DEC 0 /Loop control variable
+One, DEC 1 /Used to increment by 1
+Zero, DEC 0 /Used to reset values

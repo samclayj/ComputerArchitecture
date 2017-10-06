@@ -1,0 +1,17 @@
+ ------------------------
+ Symbol        | Location
+ --------------+---------
+ Ctr           |   032
+ CubeNum1      |   00E
+ CubeNum2      |   00F
+ EndCube       |   02C
+ LoopCube      |   022
+ LoopCubeStart |   020
+ LoopSquare    |   016
+ One           |   033
+ SubrCube      |   010
+ X             |   02F
+ X2            |   030
+ X3            |   031
+ Zero          |   034
+
